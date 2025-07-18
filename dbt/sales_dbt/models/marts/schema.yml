@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: "Product dimension derived from staged sales"
+    columns:
+      - name: product_key
+        tests: [not_null, unique]
+      - name: current_price
+        description: "Latest observed unit price"
+
+  - name: dim_customers
+    description: "Customer dimension derived from staged sales"
+    columns:
+      - name: customer_key
+        tests: [not_null, unique]
+
+  - name: fact_sales
+    description: "Central fact table of sales transactions with foreign keys"
+    columns:
+      - name: sales_key
+        tests: [not_null, unique]
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_key
+      - name: gross_amount
+        description: "quantity * price"
+

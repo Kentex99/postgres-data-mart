@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: stg_raw_sales
+    description: "Staging view selecting all columns from raw.raw_sales"
+    columns:
+      - name: id
+        tests: [not_null, unique]
+
